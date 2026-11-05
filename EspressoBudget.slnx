@@ -2,6 +2,7 @@
   <Folder Name="/backend/" />
   <Folder Name="/backend/src/">
     <Project Path="backend/src/EspressoBudget.Api/EspressoBudget.Api.csproj" />
+    <Project Path="backend/src/EspressoBudget.Migrations/EspressoBudget.Migrations.csproj" />
   </Folder>
   <Folder Name="/backend/tests/">
     <Project Path="backend/tests/EspressoBudget.Api.Tests/EspressoBudget.Api.Tests.csproj" />
