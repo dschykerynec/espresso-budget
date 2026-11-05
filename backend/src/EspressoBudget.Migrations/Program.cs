@@ -1,8 +1,15 @@
 ﻿using System.Reflection;
 using DbUp;
 using DbUp.Engine;
+using Microsoft.Extensions.Configuration;
 
-var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database");
+// var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database");
+var config = new ConfigurationBuilder()
+    .AddUserSecrets<Program>(optional: true)
+    .AddEnvironmentVariables()
+    .Build();
+var connectionString = config.GetConnectionString("Database");
+
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
