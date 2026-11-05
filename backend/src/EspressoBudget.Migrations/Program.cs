@@ -3,7 +3,6 @@ using DbUp;
 using DbUp.Engine;
 using Microsoft.Extensions.Configuration;
 
-// var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Database");
 var config = new ConfigurationBuilder()
     .AddUserSecrets<Program>(optional: true)
     .AddEnvironmentVariables()
