@@ -1,6 +1,8 @@
 @HostAddress = http://localhost:5175
 
-GET {{HostAddress}}/health
+GET {{HostAddress}}/health/live
 Accept: application/json
-
+###
+GET {{HostAddress}}/health/ready
+Accept: application/json
 ###
