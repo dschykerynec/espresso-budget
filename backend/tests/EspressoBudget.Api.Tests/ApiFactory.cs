@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Org.BouncyCastle.Math.EC;
 using Testcontainers.PostgreSql;
 
 namespace EspressoBudget.Api.Tests;
