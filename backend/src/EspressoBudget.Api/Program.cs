@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 using EspressoBudget.Api.HealthChecks;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,15 @@ var connectionString = builder.Configuration.GetConnectionString("Database");
 if (string.IsNullOrWhiteSpace(connectionString))
 {
     throw new InvalidOperationException("Set ConnectionStrings:Database (user-secrets locally, or the ConnectionStrings__Database environment variable)");
+}
+
+try
+{
+    _ = new NpgsqlConnectionStringBuilder(connectionString);
+}
+catch (ArgumentException)
+{
+    throw new InvalidOperationException("ConnectionStrings:Database is not a valid connection string. Expected Key=Value pairs separated by ';' (e.g. Host=...;Port=...;Database=...).");
 }
 
 // Add services to the container.
