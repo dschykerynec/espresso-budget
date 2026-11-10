@@ -26,7 +26,7 @@ UpgradeEngine upgrader = DeployChanges.To.PostgresqlDatabase(connectionString)
     
     if (!result.Successful)
     {
-        Console.Error.WriteLine("Error during database migration: " + result.Error);
+        Console.Error.WriteLine("Error during database migration. See error above.");
         return 1;
     }
 
