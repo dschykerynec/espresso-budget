@@ -6,9 +6,34 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       POSTGRES_DB: espresso_budget
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "espresso", "-d", "espresso_budget"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  migrator:
+    build:
+      context: .
+      dockerfile: ./backend/src/EspressoBudget.Migrations/Dockerfile
+    environment:
+      ConnectionStrings__Database: "Host=db;Port=5432;Database=espresso_budget;Username=espresso;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env};GSS Encryption Mode=Disable"
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    build:
+      context: .
+      dockerfile: ./backend/src/EspressoBudget.Api/Dockerfile
+    environment:
+      ConnectionStrings__Database: "Host=db;Port=5432;Database=espresso_budget;Username=espresso;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env};GSS Encryption Mode=Disable"
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
   
 volumes:
   db-data:
