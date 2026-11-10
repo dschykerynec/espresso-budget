@@ -10,7 +10,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "espresso", "-d", "espresso_budget"]
+      test: ["CMD", "pg_isready", "-h", "localhost", "-U", "espresso", "-d", "espresso_budget"]
       interval: 5s
       timeout: 3s
       retries: 10
