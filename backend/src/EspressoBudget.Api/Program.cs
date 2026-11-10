@@ -38,8 +38,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 app.MapHealthChecks("/health/live", new HealthCheckOptions
 {
     Predicate = _ => false,
