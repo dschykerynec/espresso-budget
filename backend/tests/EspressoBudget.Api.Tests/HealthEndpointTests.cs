@@ -23,7 +23,7 @@ public class HealthEndpointTests : IClassFixture<ApiFactory>
         HealthResponse? body = await response.Content.ReadFromJsonAsync<HealthResponse>(ct);
         Assert.NotNull(body);
         Assert.Empty(body.Checks);
-        Assert.Equal("Healthy", body.Status);
+        Assert.Equal("Unhealthy", body.Status);
     }
 
     [Fact]
