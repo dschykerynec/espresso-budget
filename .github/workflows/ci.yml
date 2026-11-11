@@ -1,0 +1,45 @@
+name: CI
+
+permissions:
+    contents: read
+
+on:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v7
+            - name: setup .NET SDK
+              uses: actions/setup-dotnet@v6
+              with:
+                global-json-file: global.json
+            - name: dotnet restore
+              run: dotnet restore
+            - name: dotnet build
+              run: dotnet build --no-restore -c Release
+            - name: dotnet test
+              run: dotnet test --no-build -c Release
+    images:
+        needs: test
+        runs-on: ubuntu-latest
+        env:
+            POSTGRES_PASSWORD: ci-only-not-secret
+        steps:
+            - name: checkout
+              uses: actions/checkout@v7
+            - name: build
+              run: docker compose build
+            - name: up
+              run: docker compose up -d
+            - name: smoke test /health/ready
+              run: curl --fail --retry 10 --retry-delay 3 --retry-all-errors http://localhost:8080/health/ready
+            - name: show container logs on failure
+              if: failure()
+              run: docker compose logs
